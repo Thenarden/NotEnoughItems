@@ -2,11 +2,14 @@ package codechicken.nei.asm;
 
 import codechicken.core.launch.CodeChickenCorePlugin;
 import codechicken.lib.asm.ASMInit;
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import cpw.mods.fml.relauncher.IFMLCallHook;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 
 @TransformerExclusions(value = {"codechicken.nei.asm"})
@@ -36,7 +39,22 @@ public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook
 
     @Override
     public void injectData(Map<String, Object> data) {
+
         location = (File) data.get("coremodLocation");
+        if (location == null)
+        {
+            try
+            {
+                URI file = NEICorePlugin.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+                location = new File (file);
+                FMLRelaunchLog.warning("[NEI] Loaded path from class at %s (Dir: %b)", location.getAbsolutePath(), location.isDirectory());
+            }
+            catch (URISyntaxException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
