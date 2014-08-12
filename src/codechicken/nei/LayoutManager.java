@@ -272,7 +272,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             @Override
             public boolean onButtonPress(boolean rightclick) {
                 if (!rightclick) {
-                    getOptionList().showGui(getGuiContainer());
+                    getOptionList().openGui(getGuiContainer(), false);
                     return true;
                 }
                 return false;
@@ -564,7 +564,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
         if (isEnabled()) {
             setInputFocused(null);
 
-            ItemList.loadItems();
+            ItemList.loadItems.restart();
             overlayRenderer = null;
 
             getLayoutStyle().init();

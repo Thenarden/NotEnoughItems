@@ -442,6 +442,7 @@ public class GuiContainerManager
     public void renderSlotOverlay(Slot slot) {
         for (IContainerDrawHandler drawHandler : drawHandlers)
             drawHandler.renderSlotOverlay(window, slot);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
     }
 
     /**
@@ -495,6 +496,8 @@ public class GuiContainerManager
                 keyTyped(c, k);
             }
         }
+
+        window.mc.func_152348_aa();
     }
 
 

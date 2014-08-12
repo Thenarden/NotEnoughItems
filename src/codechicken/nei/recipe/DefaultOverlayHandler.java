@@ -6,7 +6,6 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.api.IOverlayHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -52,8 +51,8 @@ public class DefaultOverlayHandler implements IOverlayHandler
         this(5, 11);
     }
 
-    int offsetx;
-    int offsety;
+    public int offsetx;
+    public int offsety;
     
     @Override
     public void overlayRecipe(GuiContainer gui, IRecipeHandler recipe, int recipeIndex, boolean shift)
@@ -109,7 +108,7 @@ public class DefaultOverlayHandler implements IOverlayHandler
             
             for(Slot slot : (List<Slot>)gui.inventorySlots.inventorySlots)
             {
-                if(!slot.getHasStack() || !(slot.inventory instanceof InventoryPlayer))
+                if(!slot.getHasStack() || !canMoveFrom(slot, gui))
                     continue;
                 
                 ItemStack stack = slot.getStack();
@@ -255,7 +254,7 @@ public class DefaultOverlayHandler implements IOverlayHandler
     {
         for(Slot slot : (List<Slot>)gui.inventorySlots.inventorySlots)//work out how much we have to go round
         {
-            if(slot.getHasStack() && slot.inventory instanceof InventoryPlayer)
+            if(slot.getHasStack() && canMoveFrom(slot, gui))
             {
                 ItemStack pstack = slot.getStack();
                 DistributedIngred istack = findIngred(ingredStacks, pstack);
@@ -279,6 +278,10 @@ public class DefaultOverlayHandler implements IOverlayHandler
             }
         }
         return ingredStacks;
+    }
+
+    public boolean canMoveFrom(Slot slot, GuiContainer gui) {
+        return slot.inventory instanceof InventoryPlayer;
     }
 
     @SuppressWarnings("unchecked")
